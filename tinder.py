@@ -2,8 +2,6 @@ import requests as r
 from requests import Session
 import json
 
-
-
 class TinderClient():
 
 	def __init__(self):
@@ -22,8 +20,6 @@ class TinderClient():
 		self.session = Session()
 		self.session.headers.update(self.headers)
 
-		# meta information on the tinder client (distance, max age etc.)
-		self.meta = {} 
 
 	def authenticate(self, fb_token):
 
