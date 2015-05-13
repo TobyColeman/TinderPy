@@ -82,7 +82,7 @@ class TinderClient():
 
 		response = self.session.get(self.endpoint(endpoint))
 		data = json.loads(response.content)
-		print data
+
 		return data
 
 	def message(self, message, m_id):
@@ -95,11 +95,10 @@ class TinderClient():
 				   self.endpoint('user/matches/{0}'.format(m_id),
 				   data=payload))
 
-		if response.status_code != 200:
-			print 'Could not send message'
-
-		data = json.loads(response.content)
-		return data
+		if response.status_code == 200:
+			data = json.loads(response.content)
+			return data
+		return False
 
 	def update_profile(self, distance=None, age_max=None, 
 					   age_min=None, gender=None, 
@@ -116,11 +115,8 @@ class TinderClient():
 		response = self.session.post(self.endpoint('profile'),
 				   data=payload)
 
-		print response.status_code
-
 		if response.status_code == 200:
 			data = json.loads(response.content)
-			print data
 			return json.dumps(data)
 		return False
 
