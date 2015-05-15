@@ -48,12 +48,6 @@ class TinderClient():
 
 		return data
 
-	def get_update(self):
-		response = self.session.get(self.endpoint('updates'))
-		aata = json.loads(response.content)
-
-		return data
-
 	def get_recs(self):
 		response = self.session.post(self.endpoint('/user/recs'))
 		data = json.loads(response.content)
