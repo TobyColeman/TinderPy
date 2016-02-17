@@ -2,20 +2,22 @@ from utils.facebook import FacebookClient
 from tinder import TinderClient
 
 
-# authenticate with facebook and get oauth token needed for tinder login
-F = FacebookClient('email', 'password')
-F.authenticate()
-token = F.get_token()
+# create Facebook client
+facebook_client = FacebookClient()
 
-# create a tinder client
-T = TinderClient()
-# authenticate with the token from facebook
-T.authenticate(token)
+# create Tinder Client
+tinder_client = TinderClient()
+
+# authenticate with Facebook and get oauth token
+facebook_client.authenticate('email', 'password').get_oauth_token()
+
+#authenticate with the token from facebook
+tinder_client.authenticate(facebook_client.token)
 
 # get recommendations (the deck you'll be swiping through)
-T.get_recs()
+tinder_client.get_recs()
 
 # get any new messages, matches etc..
-T.get_updates()
+tinder_client.get_updates()
 
 
