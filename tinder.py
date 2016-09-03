@@ -2,61 +2,52 @@ import requests as r
 from requests import Session
 import json
 
-class TinderClient():
-
+class TinderClient:
 	def __init__(self):
-
-		# tinder api 
+		# tinder api
 		self.TINDER_HOST = 'https://api.gotinder.com'
-
-		# headers needed 
+		# headers needed
 		self.headers = {
 	        'User-Agent' : 'Tinder Android Version 4.1.2',
 	        'os_version' : '16',
 	        'X-Auth-Token': ''
 		}
-
 		# user's session
 		self.session = Session()
 		self.session.headers.update(self.headers)
 
 
-	def authenticate(self, fb_token):
-
-		payload = {
-			'facebook_token': fb_token
-		}
-
+	def authenticate(self, fb_token, fb_id):
 		response = self.session.post(
-					self.endpoint('auth'), 
-					data=payload,
+					self.endpoint('auth'),
+					data={ 'facebook_token': fb_token, 'facebook_id': fb_id },
 					headers=self.headers)
 
 		if response.status_code == 200:
-			data = json.loads(response.content)
+			data = json.loads(response.text)
 			self.headers['X-Auth-Token'] = data['token']
 			self.session.headers.update(self.headers)
-			print "Logged into Tinder!"
+			print("Logged into Tinder!")
 			self.get_meta()
 			return data
-		print "Could not log into Tinder."
+		print("Could not log into Tinder.")
 		return False
 
 	def get_updates(self):
 		response = self.session.post(self.endpoint('updates'))
-		data = json.loads(response.content)
+		data = json.loads(response.text)
 
 		return data
 
 	def get_recs(self):
 		response = self.session.post(self.endpoint('/user/recs'))
-		data = json.loads(response.content)
+		data = json.loads(response.text)
 
 		return data
 
 	def get_meta(self):
 		response = self.session.get(self.endpoint('meta'))
-		data = json.loads(response.content)
+		data = json.loads(response.text)
 
 
 	def update_location(self, latitude, longitude):
@@ -75,12 +66,11 @@ class TinderClient():
 			endpoint = 'pass/{0}'.format(id)
 
 		response = self.session.get(self.endpoint(endpoint))
-		data = json.loads(response.content)
+		data = json.loads(response.text)
 
 		return data
 
 	def message(self, message, m_id):
-
 		payload = {
 			'message': message
 		}
@@ -90,14 +80,14 @@ class TinderClient():
 				   data=payload))
 
 		if response.status_code == 200:
-			data = json.loads(response.content)
+			data = json.loads(response.text)
 			return data
 		return False
 
-	def update_profile(self, distance=None, age_max=None, 
-					   age_min=None, gender=None, 
+	def update_profile(self, distance=None, age_max=None,
+					   age_min=None, gender=None,
 					   discoverable=None):
-		
+
 		payload = {
 			'distance_filter': distance,
 			'age_filter_max': age_max,
@@ -110,7 +100,7 @@ class TinderClient():
 				   data=payload)
 
 		if response.status_code == 200:
-			data = json.loads(response.content)
+			data = json.loads(response.text)
 			return json.dumps(data)
 		return False
 
