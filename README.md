@@ -3,14 +3,14 @@
 Simple Python wrapper for the requests module to access the Tinder API.
 
 ### Requirements ###
-- Python 2.7.5
+- Python 3
 - requests
 
 ### Installation ###
 ```
-pip install
+pip install -r requirements.txt
 ```
 
 ### TODO
-- [ ] New facebook oauth flow
+- [x] New facebook oauth flow
 - [ ] Tidy up tinder api
