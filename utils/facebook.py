@@ -48,8 +48,10 @@ class FacebookClient:
 	def _get_fbid_from_cookies(self):
 		return self.session.cookies.get('c_user')
 
-	def _get_fb_dtsg(self, response_content):
+	@staticmethod
+	def _get_fb_dtsg(response_content):
 		return response_content.split('fb_dtsg" value=')[1].split(' ')[0].strip('"')
 
-	def _parse_token(self, token_string):
+	@staticmethod
+	def _parse_token(token_string):
 		return token_string.split('access_token=')[1].split('&')[0]
