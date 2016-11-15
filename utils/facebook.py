@@ -21,7 +21,7 @@ class FacebookClient:
 		login_response = self.session.post(login_endpoint, { 'email': email, 'pass': password })
 		login_response.raise_for_status()
 
-		if 'Set-Cookie' not in login_response.headers:
+		if not self._is_login_success(login_response.text):
 			raise HTTPError(403, 'Failed to login to Facebook. Is your email and password correct?')
 
 		confirm_response = self.session.post(
@@ -47,6 +47,10 @@ class FacebookClient:
 
 	def _get_fbid_from_cookies(self):
 		return self.session.cookies.get('c_user')
+
+	@staticmethod
+	def _is_login_success(response_content):
+		return 'Welcome to Facebook' not in response_content
 
 	@staticmethod
 	def _get_fb_dtsg(response_content):
